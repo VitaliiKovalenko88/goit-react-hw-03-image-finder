@@ -5,7 +5,7 @@ import Button from 'components/Button/Button';
 import Modal from 'components/Modal/Modal';
 import { Loader } from 'components/Loader/Loader';
 import ImageGallery from 'components/ImageGallery/ImageGallery';
-
+import css from './App.module.css';
 class App extends Component {
   state = {
     query: '',
@@ -87,11 +87,11 @@ class App extends Component {
   };
 
   render() {
-    console.log();
     const { gallery, largeImage, showModal, error, isLoading } = this.state;
+    const isGallery = gallery.length;
 
     return (
-      <div>
+      <div className={css.container}>
         <SearchBar onSubmit={this.handleFormSubmite} />
         {isLoading && <Loader />}
         {showModal && (
@@ -101,9 +101,9 @@ class App extends Component {
             url={largeImage}
           />
         )}
-
+        {error !== null ? <div>{error}</div> : null}
         <ImageGallery gallary={gallery} onClick={this.onOpenModal} />
-        <Button onLoadMore={this.onLoadMoreImg} />
+        {isGallery ? <Button onLoadMore={this.onLoadMoreImg} /> : null}
       </div>
     );
   }

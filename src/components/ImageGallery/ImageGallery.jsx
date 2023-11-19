@@ -1,17 +1,17 @@
-import { ImageGalleryItem } from 'components/ImageGalleryItem/Loader/ImageGalleryItem';
+import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import PropTypes from 'prop-types';
+import css from './ImageGallery.module.css';
 
 const ImageGallery = ({ gallary, onClick }) => {
   return (
-    <ul onClick={onClick}>
+    <ul className={css.list} onClick={onClick}>
       {gallary.map(({ id, webformatURL, largeImageURL, tags }) => (
-        <li key={id}>
-          <ImageGalleryItem
-            url={webformatURL}
-            tags={tags}
-            modalUrl={largeImageURL}
-          />
-        </li>
+        <ImageGalleryItem
+          key={id}
+          url={webformatURL}
+          tags={tags}
+          modalUrl={largeImageURL}
+        />
       ))}
     </ul>
   );
