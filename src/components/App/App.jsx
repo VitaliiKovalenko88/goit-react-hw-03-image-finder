@@ -12,6 +12,7 @@ class App extends Component {
     gallery: [],
     page: 1,
     error: null,
+    loadMore: false,
     isLoading: false,
     largeImage: '',
     showModal: false,
@@ -44,7 +45,7 @@ class App extends Component {
     const { query, page } = this.state;
 
     try {
-      const { hits } = await getImageWithQuery(query, page);
+      const { hits, totalHits } = await getImageWithQuery(query, page);
 
       if (hits.length === 0) {
         this.setState({
@@ -57,6 +58,7 @@ class App extends Component {
 
       this.setState(prevState => ({
         gallery: [...prevState.gallery, ...hits],
+        loadMore: this.state.page < Math.ceil(totalHits / 12),
         error: null,
         isLoading: false,
       }));
@@ -87,8 +89,8 @@ class App extends Component {
   };
 
   render() {
-    const { gallery, largeImage, showModal, error, isLoading } = this.state;
-    const isGallery = gallery.length;
+    const { gallery, largeImage, showModal, error, isLoading, loadMore } =
+      this.state;
 
     return (
       <div className={css.container}>
@@ -103,7 +105,7 @@ class App extends Component {
         )}
         {error !== null ? <div>{error}</div> : null}
         <ImageGallery gallary={gallery} onClick={this.onOpenModal} />
-        {isGallery ? <Button onLoadMore={this.onLoadMoreImg} /> : null}
+        {loadMore ? <Button onLoadMore={this.onLoadMoreImg} /> : null}
       </div>
     );
   }
